@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 __author__ = 'Nikolay Mamashin (mamashin@gmail.com)'
 
-
+from typing import Generator, Any, List
 import pytest
 import json
 import httpretty
@@ -9,7 +9,7 @@ from server.settings.components import placeholder
 
 
 @pytest.fixture()
-def generate_pictures_list():
+def generate_pictures_list() -> List[dict[str, str]]:
     """Generate 5 pictures list (static), looks like:
     [{'id': 1, 'url': 'https://via.placeholder.com/600/92c952'}, ... ]
     """
@@ -21,7 +21,7 @@ def generate_pictures_list():
 
 
 @pytest.fixture()
-def external_api_get_pictures_mock(generate_pictures_list):
+def external_api_get_pictures_mock(generate_pictures_list: List[dict[str, str]]) -> Generator:
     """Mock external API, return generate 5 pictures JSON list,
     call from server.apps.pictures.intrastructure.services.placeholder.PicturesFetch"""
     with httpretty.httprettized():

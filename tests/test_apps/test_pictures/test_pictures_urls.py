@@ -2,6 +2,8 @@
 __author__ = 'Nikolay Mamashin (mamashin@gmail.com)'
 
 from http import HTTPStatus
+from typing import List
+
 import pytest
 
 from django.test import Client
@@ -12,7 +14,7 @@ pytestmark = pytest.mark.parametrize('url_name', ['pictures:dashboard', 'picture
 
 
 @pytest.mark.django_db
-def test_pictures_non_auth_url(client: Client, url_name) -> None:
+def test_pictures_non_auth_url(client: Client, url_name: List[str]) -> None:
     """Test that pictures pages is not accessible for not authenticated user and redirect to login page."""
     response = client.get(reverse_lazy(url_name))
 
@@ -21,7 +23,7 @@ def test_pictures_non_auth_url(client: Client, url_name) -> None:
 
 
 @pytest.mark.django_db
-def test_pictures_auth_url(admin_client: Client, url_name) -> None:
+def test_pictures_auth_url(admin_client: Client, url_name: List[str]) -> None:
     """Test that pictures pages is accessible for authenticated user."""
     response = admin_client.get(reverse_lazy(url_name))
 

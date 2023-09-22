@@ -3,6 +3,8 @@ __author__ = 'Nikolay Mamashin (mamashin@gmail.com)'
 
 import re
 from http import HTTPStatus
+from typing import Dict, Generator
+
 import httpretty
 import json
 import pytest
@@ -33,7 +35,7 @@ def external_api_patch_mock(external_api_placeholder_lead_id_response):
 @pytest.mark.django_db
 def test_update_exist_user_data_field(client: Client,
                                       create_new_user: User,
-                                      external_api_patch_mock: dict):
+                                      external_api_patch_mock: Generator) -> None:
     """Test update exist user data field"""
     create_new_user.address = 'Amsterdam'  # change address
     create_new_user.date_of_birth = create_new_user.date_of_birth.strftime('%Y-%m-%d')  # type date -> string

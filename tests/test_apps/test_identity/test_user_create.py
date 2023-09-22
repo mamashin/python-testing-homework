@@ -51,7 +51,7 @@ def test_valid_create_new_user(client: Client,
                                user_data_generate: BaseModel,
                                external_api_post_mock,
                                assert_create_correct_user_data,
-                               assert_external_api_lead_id_create):
+                               assert_external_api_lead_id_create) -> None:
     """Test create new regular user with random generate data and check external API 'lead_id' create"""
     response = client.post(reverse_lazy('identity:registration'), data=user_data_generate.model_dump())
 

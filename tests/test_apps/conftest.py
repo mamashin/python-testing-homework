@@ -9,6 +9,7 @@ from http import HTTPStatus
 from pydantic import BaseModel
 from mimesis.locales import Locale
 from mimesis import Generic, Address, Person, Gender
+from typing import Dict
 
 from django.test import Client
 from django.urls import reverse_lazy
@@ -40,7 +41,7 @@ def user_data_generate() -> BaseModel:
 
 @pytest.fixture()
 def create_new_user(client: Client, user_data_generate: BaseModel,
-                    external_api_post_mock: dict) -> User:
+                    external_api_post_mock: Dict[str, str]) -> User:
     """Create new regular user with random generate data"""
     client.post(reverse_lazy('identity:registration'), data=user_data_generate.model_dump())
     user = User.objects.get(email=user_data_generate.email)
@@ -49,7 +50,7 @@ def create_new_user(client: Client, user_data_generate: BaseModel,
 
 
 @pytest.fixture()
-def external_api_placeholder_lead_id_response(user_data_generate: BaseModel):
+def external_api_placeholder_lead_id_response(user_data_generate: BaseModel) -> Dict[str, str]:
     """Return external_placeholder_lead_id_response"""
     response_model_dict = user_data_generate.model_dump()
     response_model_dict['id'] = Generic().code.random.randint(1, 999)

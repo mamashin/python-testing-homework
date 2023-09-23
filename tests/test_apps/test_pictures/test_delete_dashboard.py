@@ -9,6 +9,7 @@ from django.urls import reverse_lazy
 from http import HTTPStatus
 
 from server.apps.identity.models import User
+from server.apps.pictures.models import FavouritePicture
 
 
 @pytest.mark.django_db
@@ -35,7 +36,7 @@ def test_delete_picture_from_favorite(
     assert create_new_user.pictures.count() == 1  # User now has one favorite picture
 
     # Delete exist picture
-    picture_delete_post_data['id'] = "1"
+    picture_delete_post_data['id'] = FavouritePicture.objects.last().id
     delete_response = client.post(reverse_lazy('pictures:favourites'), data=picture_delete_post_data)
     assert delete_response.status_code == HTTPStatus.FOUND
     assert create_new_user.pictures.count() == 0  # User now has no favorite pictures

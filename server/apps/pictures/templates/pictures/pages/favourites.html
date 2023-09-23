@@ -7,11 +7,20 @@
 {% endblock title %}
 {% block content %}
   <main>
+    <div>
+        {% include 'common/includes/messages.html' with messages=messages %}
+        {{ form.errors }}
+    </div>
     <h1>Список любимых картинок</h1>
-    {% for picture in object_list %}
+    {% for picture in pictures %}
       <div data-test-id="favourites-picture-db">
         <p>Номер {{ picture.foreign_id }}</p>
         <img alt="Картинка {{ picture.foreign_id }}" src="{{ picture.url }}" />
+        <form method="post" action="{% url 'pictures:favourites' %}">
+            {% csrf_token %}
+            <input type="hidden" name="id" value="{{ picture.id }}" />
+            <button type="submit">Удалить из избранного</button>
+        </form>
       </div>
     {% endfor %}
   </main>
